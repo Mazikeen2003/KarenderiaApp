@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menu Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body { background: #f6f7fb; }
+    .brand { color: #d35400; font-weight: 800; }
+    .price { font-weight: 800; }
+    .hint { font-size: .9rem; }
+
+    .food-img {
+      height: 100px;
+      width: 100%;
+      object-fit: cover;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+    }
+    .card.rounded-4 { overflow: hidden; } 
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-white border-bottom">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">
+      <span class="brand">Karenderia</span> Web App
+    </a>
+    <div class="ms-auto d-flex gap-2">
+      <a class="btn btn-outline-secondary btn-sm" href="MenuManagement.html">Menu</a>
+      <a class="btn btn-outline-secondary btn-sm" href="orderManagement.html">Orders</a>
+      <a class="btn btn-outline-secondary btn-sm" href="SalesSummary.html">Sales</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container py-4">
+  <div class="d-flex align-items-start justify-content-between flex-wrap gap-2">
+    <div>
+      <h2 class="mb-1">🍽️ Menu Management</h2>
+      <div class="text-muted hint">Student 2 feature: menu list display + sample items and prices.</div>
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-sm btn-outline-danger" id="clearCartBtn">Clear Cart</button>
+      <a class="btn btn-sm btn-primary" href="orderManagement.html">Go to Order</a>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-2" id="menuGrid"></div>
+
+  <div class="card rounded-4 shadow-sm mt-3">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+          <h5 class="mb-0">🛒 Cart Preview</h5>
+          <div class="text-muted hint">Items you added from the menu.</div>
+        </div>
+        <span class="badge bg-dark" id="cartCount">0 items</span>
+      </div>
+
+      <hr>
+      <ul class="mb-0" id="cartList">
+        <li class="text-muted">Cart is empty</li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<script>
+  // ---------- Shared Storage Keys ----------
+  const CART_KEY = "karenderia_cart";
+
+  // ---------- Menu Data (Edit/Extend anytime) ----------
+  const menuItems = [
+    {
+      id: 1,
+      name: "Chicken Adobo",
+      price: 50,
+      desc: "Classic soy-vinegar braised chicken.",
+      img: "images/adobongmanok.jpg"
+    },
+    {
+      id: 2,
+      name: "Pork Sinigang",
+      price: 65,
+      desc: "Sour tamarind soup with pork.",
+      img: "images/sinigang.png"
+    },
+    {
+      id: 3,
+      name: "Kare-Kare",
+      price: 75,
+      desc: "Peanut stew with veggies.",
+      img: "images/kare-kare.png"
+    },
+    {
+      id: 4,
+      name: "Fried Bangus",
+      price: 55,
+      desc: "Crispy milkfish served hot.",
+      img: "images/bangus.png"
+    },
+    {
+      id: 5,
+      name: "Rice",
+      price: 10,
+      desc: "Steamed rice per serving.",
+      img: "images/rice.png"
+    },
+    {
+      id: 6,
+      name: "Iced Tea",
+      price: 20,
+      desc: "Refreshing house iced tea.",
+      img: "images/icetea.png"
+    }
+  ];
+
+  function peso(n) { return "₱" + Number(n).toFixed(2); }
+
+  function getCart() {
+    try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function saveCart(cart) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  }
+
+  function addToCart(itemId) {
+    const cart = getCart();
+    const item = menuItems.find(m => m.id === itemId);
+    if (!item) return;
+
+    cart.push({ id: item.id, name: item.name, price: item.price });
+    saveCart(cart);
+    renderCartPreview();
+  }
+
+  function clearCart() {
+    saveCart([]);
+    renderCartPreview();
+  }
+
+  function renderMenu() {
+    const grid = document.getElementById("menuGrid");
+    grid.innerHTML = menuItems.map(item => `
+      <div class="col-sm-6 col-lg-4">
+        <div class="card h-100 rounded-4 shadow-sm">
+          <img
+            src="${item.img}"
+            alt="${item.name}"
+            class="food-img"
+            loading="lazy"
+          />
+
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex justify-content-between align-items-start gap-2">
+              <h5 class="card-title mb-1">${item.name}</h5>
+              <span class="badge bg-warning text-dark price">${peso(item.price)}</span>
+            </div>
+            <p class="text-muted small mb-3">${item.desc}</p>
+
+            <div class="mt-auto d-grid">
+              <button class="btn btn-success" onclick="addToCart(${item.id})">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function renderCartPreview() {
+    const cart = getCart();
+    const cartCount = document.getElementById("cartCount");
+    const cartList = document.getElementById("cartList");
+
+    cartCount.textContent = `${cart.length} item${cart.length === 1 ? "" : "s"}`;
+
+    if (cart.length === 0) {
+      cartList.innerHTML = `<li class="text-muted">Cart is empty</li>`;
+      return;
+    }
+
+    cartList.innerHTML = cart.map((c, idx) => `
+      <li>
+        ${idx + 1}. ${c.name} <span class="text-muted">(${peso(c.price)})</span>
+      </li>
+    `).join("");
+  }
+
+  document.getElementById("clearCartBtn").addEventListener("click", () => {
+    if (confirm("Clear cart?")) clearCart();
+  });
+
+  // Initial render
+  renderMenu();
+  renderCartPreview();
+</script>
