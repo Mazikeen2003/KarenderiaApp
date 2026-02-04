@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Karenderia Web App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body { background: #f6f7fb; }
+    .brand { color: #d35400; font-weight: 800; }
+    .hero {
+      background: linear-gradient(135deg, #ffffff, #fff2e6);
+      border: 1px solid #ffe0c2;
+    }
+    .card-link { text-decoration: none; color: inherit; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-white border-bottom">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">
+      <span class="brand">Karenderia</span> Web App
+    </a>
+
+    <div class="ms-auto d-flex gap-2">
+      <a class="btn btn-outline-secondary btn-sm" href="MenuManagement.html">Menu</a>
+      <a class="btn btn-outline-secondary btn-sm" href="orderManagement.html">Orders</a>
+      <a class="btn btn-outline-secondary btn-sm" href="SalesSummary.html">Sales</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container py-4">
+  <div class="p-4 p-md-5 rounded-4 hero">
+    <h1 class="display-6 mb-2">
+      Welcome to the <span class="brand">Karenderia</span> Web App
+    </h1>
+    <p class="text-muted mb-0">
+      Simple web app for Menu, Orders, and Daily Sales Summary (Git Collaboration Activity).
+    </p>
+  </div>
+
+  <div class="row g-3 mt-3">
+    <div class="col-md-4">
+      <a class="card-link" href="MenuManagement.html">
+        <div class="card rounded-4 shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">🍽️ Menu Management</h5>
+            <p class="card-text text-muted">View items and add to cart.</p>
+            <span class="btn btn-sm btn-primary">Open Menu</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-4">
+      <a class="card-link" href="orderManagement.html">
+        <div class="card rounded-4 shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">🧾 Order Management</h5>
+            <p class="card-text text-muted">See selected items and total price.</p>
+            <span class="btn btn-sm btn-primary">Create / Place Order</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-md-4">
+      <a class="card-link" href="SalesSummary.html">
+        <div class="card rounded-4 shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">📊 Daily Sales Summary</h5>
+            <p class="card-text text-muted">Total sales + number of orders.</p>
+            <span class="btn btn-sm btn-primary">View Sales</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="text-muted small mt-4">
+    Tip: Work on your assigned page per branch, then submit Pull Request for review & merge.
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
